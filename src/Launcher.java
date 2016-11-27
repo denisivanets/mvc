@@ -14,11 +14,11 @@ public class Launcher {
         launcher.startApp();
     }
     private void startApp(){
-//        model = new Model();
-//        controller = new Controller(model);
-//        view = new SwingView(controller);
-//        controller.setView(view);
-//        controller.runView();
-
+        model = new Model();
+        controller = new Controller(model);
+        view = new SwingView(controller);
+        controller.setView(view);
+        controller.runView();
+//        view.drawRegisterPage();
     }
 }

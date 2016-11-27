@@ -22,13 +22,22 @@ public class Controller {
 
     public void loginAction(String login,char[] password){
         AccountType type = model.checkLogin(login,password);
-        if(type == AccountType.ADMIN){
-            view.drawAdminPanel();
-        } else if(type == AccountType.USER) {
-            //user actions
+        switch(type){
+            case ADMIN:
+                view.drawAdminPage();
+                break;
+            case USER:
+                view.drawUserPage();
+                break;
+            case NEW_USER:
+                view.drawRegisterPage();
+                break;
+            default:
+                view.drawWelcomePage();
         }
-        else{
-            view.drawWelcomePanel();
-        }
+    }
+    public void registerAction(String name, String surname, String phone, String login, char[] password){
+        model.createUser(name,surname,phone,login,password);
+        view.drawUserPage();
     }
 }

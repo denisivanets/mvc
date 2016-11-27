@@ -1,5 +1,7 @@
 package business;
 
+import com.sun.istack.internal.Nullable;
+
 import java.io.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -31,21 +33,7 @@ public class FileUtils {
         }
     }
 
-    public static List<Client> readClientsFromFile(){
-        List<Client> clients = new ArrayList<>();
-        File file = new File(clientsPath);
-        try(BufferedReader br = new BufferedReader(new FileReader(clientsPath))){
-            String oneClient;
-            while((oneClient = br.readLine()) != null){
-                clients.add(parseStringToClient(oneClient));
-            }
-        } catch(IOException ex){
-            ex.getMessage();
-            ex.printStackTrace();
-        }
-        return clients;
-    }
-
+    @Nullable
     public static Client findClientInFileByLogin(String login){
         List<Client> clients = readClientsFromFile();
         Iterator iter = clients.iterator();
@@ -56,6 +44,20 @@ public class FileUtils {
             }
         }
         return null;
+    }
+    public static List<Client> readClientsFromFile(){
+        List<Client> clients = new ArrayList<>();
+        File file = new File(clientsPath);
+        try(BufferedReader br = new BufferedReader(new FileReader(file))){
+            String oneClient;
+            while((oneClient = br.readLine()) != null){
+                clients.add(parseStringToClient(oneClient));
+            }
+        } catch(IOException ex){
+            ex.getMessage();
+            ex.printStackTrace();
+        }
+        return clients;
     }
 
     private static String parseClientToString(Client client){
@@ -108,7 +110,7 @@ public class FileUtils {
     }
 
     private static String extractValue(String str){
-        return str.substring(str.indexOf(":" + 1));
+        return str.substring(str.indexOf(":") + 1);
     }
 
 

@@ -20,11 +20,11 @@ public class InMemoryDB {
         return transactionsList;
     }
 
-    public void addClient(Client client){
+    public static void addClient(Client client){
         clientsList.add(client);
     }
 
-    public void addTransaction(Transaction transaction){
+    public static void addTransaction(Transaction transaction){
         transactionsList.add(transaction);
     }
 }
