@@ -12,9 +12,9 @@ import java.util.List;
 public class FileUtils {
     private static String clientsPath = "src\\files\\clients.dat";
     private static String transactionsPath = "src\\files\\transactions.dat";
+    private static String productsPath = "src\\files\\products.dat";
 
     public static void writeClientInFile(Client client){
-        File file = new File(clientsPath);
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(clientsPath,true))){
             bw.write(parseClientToString(client) + "\n");
         } catch(IOException ex){
@@ -24,7 +24,6 @@ public class FileUtils {
     }
 
     public static void writeTransactionIfFile(Transaction transaction){
-        File file = new File(transactionsPath);
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(transactionsPath,true))){
             bw.write(parseTransactionToString(transaction));
         } catch(IOException ex){
@@ -58,6 +57,26 @@ public class FileUtils {
             ex.printStackTrace();
         }
         return clients;
+    }
+
+    public static void writeProductInFile(Product product){
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(productsPath,true))){
+            bw.write(parseProductToString(product));
+        } catch(IOException ex){
+            ex.getMessage();
+            ex.printStackTrace();
+        }
+    }
+
+    public static List<Product> readProductsFromFile(){
+        List<Product> products = new ArrayList<>();
+        File file = new File(productsPath);
+        try(BufferedReader br = new BufferedReader(new FileReader(file))){
+        } catch(IOException ex){
+            ex.getMessage();
+            ex.printStackTrace();
+        }
+        return null;//TODO:?????????????????????????
     }
 
     private static String parseClientToString(Client client){
@@ -108,6 +127,25 @@ public class FileUtils {
         client.setPassword(pass);
         return client;
     }
+
+    private static String parseProductToString(Product product){
+        String name = product.getProductName();
+        String amount = Integer.toString(product.getAmount());
+        String cost = Double.toString(product.getCost());
+        return String.format("name:%s,amount:%s,cost:%s",name,amount,cost);
+    }
+
+    private static Product parseStringToProduct(String productAsString){
+        int NAME = 0;
+        int AMOUNT = 0;
+        int COST = 0;
+        String[] oneProduct = productAsString.split(",");
+        String name = extractValue(oneProduct[NAME]);
+        int amount = Integer.parseInt(extractValue(oneProduct[AMOUNT]));
+        double cost = Double.parseDouble(extractValue(oneProduct[COST]));
+        return new Product(name,amount,cost);
+    }
+
 
     private static String extractValue(String str){
         return str.substring(str.indexOf(":") + 1);

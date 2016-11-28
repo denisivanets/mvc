@@ -1,1 +1,3 @@
 name:Name,srname:Surname,blnc:5700.0,phone:Phone,log:Login,pass:123,type:u
+name:John,srname:Smith,blnc:5700.0,phone:88005553535,log:john23,pass:qwerty,type:u
+name:Name,srname:Surname,blnc:5700.0,phone:Phone,log:Login,pass:Password,type:u

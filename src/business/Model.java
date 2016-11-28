@@ -2,8 +2,12 @@ package business;
 
 import inmemorydb.InMemoryDB;
 
+import java.util.List;
+
 public class Model {
     Client currentClient;
+    List<Product> availableProducts;
+
 
     public AccountType checkLogin(String login,char[] password){
         Client client = FileUtils.findClientInFileByLogin(login);
@@ -49,5 +53,10 @@ public class Model {
         InMemoryDB.addClient(client);
         FileUtils.writeClientInFile(client);
     }
+
+    public List<Product> getProductList(){
+        return null;//TODO:???????????????
+    }
+
 
 }

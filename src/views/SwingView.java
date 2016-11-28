@@ -92,8 +92,6 @@ public class SwingView implements View {
     public void drawUserPage(){
         userPanel = new JPanel();
         frame.getContentPane().add(BorderLayout.CENTER,userPanel);
-        JTextArea area = new JTextArea("USER PAGE");
-        userPanel.add(area);
-        userPanel.setVisible(true);
+        JList<String> abs;
     }
 }

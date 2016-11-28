@@ -19,6 +19,5 @@ public class Launcher {
         view = new SwingView(controller);
         controller.setView(view);
         controller.runView();
-//        view.drawRegisterPage();
     }
 }

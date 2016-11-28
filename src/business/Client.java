@@ -1,6 +1,9 @@
 package business;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Client {
     private String name;
     private String surname;
@@ -9,9 +12,11 @@ public class Client {
     private String login;
     private String password;
     private AccountType accountType;
+    private List<Product> basket;
 
     public Client(AccountType accountType){
         this.accountType = accountType;
+        basket = new ArrayList<>();
     }
 
     public String getName() {
@@ -64,5 +69,9 @@ public class Client {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addProduct(Product product){
+        basket.add(product);
     }
 }

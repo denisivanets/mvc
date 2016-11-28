@@ -8,6 +8,13 @@ public class Transaction {
     private int amount;
     private Date date;
 
+    public Transaction(String clientLogin,String productName,int amount){
+        this.clientLogin = clientLogin;
+        this.productName = productName;
+        this.amount = amount;
+        date = new Date();
+    }
+
     public String getClientLogin() {
         return clientLogin;
     }

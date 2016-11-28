@@ -2,7 +2,9 @@ package controllers;
 
 import business.Model;
 import business.AccountType;
+import business.Product;
 import views.View;
+import java.util.List;
 
 public class Controller {
     Model model;
@@ -36,8 +38,14 @@ public class Controller {
                 view.drawWelcomePage();
         }
     }
+
     public void registerAction(String name, String surname, String phone, String login, char[] password){
         model.createUser(name,surname,phone,login,password);
         view.drawUserPage();
     }
+
+    public List<Product> provideAvailableProducts(){
+        return null;//TODO:???????????????
+    }
+
 }
