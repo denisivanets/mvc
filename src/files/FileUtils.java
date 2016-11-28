@@ -95,10 +95,9 @@ public class FileUtils {
         String login = client.getLogin();
         String password = client.getPassword();
         String accountType = client.getAccountType()== AccountType.ADMIN?"a":"u";
-        String result = String.format(
+        return String.format(
                 "name:%s,srname:%s,blnc:%s,phone:%s,log:%s,pass:%s,type:%s",
                 name,surname,balance,phone,login,password,accountType);
-        return result;
     }
 
     private static String parseTransactionToString(Transaction transaction){
@@ -106,8 +105,7 @@ public class FileUtils {
         String product = transaction.getProductName();
         String amount = Integer.toString(transaction.getAmount());
         String date = transaction.getDate();
-        String result = String.format("log:%s,prod:%s,amount:%s,date:%s",login,product,amount,date);
-        return result;
+        return String.format("log:%s,prod:%s,amount:%s,date:%s",login,product,amount,date);
     }
 
     private static Transaction parseStringToTransaction(String transactionAsString){

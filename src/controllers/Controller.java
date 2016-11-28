@@ -2,9 +2,8 @@ package controllers;
 
 import business.Model;
 import business.AccountType;
-import business.Product;
 import views.View;
-import java.util.List;
+import java.util.Vector;
 
 public class Controller {
     Model model;
@@ -44,8 +43,12 @@ public class Controller {
         view.drawUserPage();
     }
 
-    public List<String> provideAvailableProducts(){
-       return model.getAvailableProducts();
+    public Vector<String> provideAvailableProducts(){
+       return model.getAvailableProductsToController();
+    }
+
+    public Vector<String> provideUserBasket(){
+        return model.getCurrentUserBasket();
     }
 
 }

@@ -3,9 +3,7 @@ package business;
 import files.FileUtils;
 import inmemorydb.InMemoryDB;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Model {
     Client currentClient;
@@ -64,8 +62,8 @@ public class Model {
         FileUtils.writeClientInFile(client);
     }
 
-    public List<String> getAvailableProducts(){
-        List<String> productsAsStringList = new ArrayList<>();
+    public Vector<String> getAvailableProductsToController(){
+        Vector<String> productsAsStringList = new Vector<>();
         InMemoryDB.getProductList().forEach(
                 (product) -> productsAsStringList.add(product.toString())
         );
@@ -87,5 +85,12 @@ public class Model {
         return client;
     }
 
+    public Vector<String> getCurrentUserBasket(){
+        Vector<String> currentUserBasket = new Vector<>();
+        currentClient.getBasket().forEach(
+                (product) -> currentUserBasket.add(product.toString())
+        );
+        return currentUserBasket;
+    }
 
 }

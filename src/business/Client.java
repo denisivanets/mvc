@@ -74,4 +74,8 @@ public class Client {
     public void addProduct(Product product){
         basket.add(product);
     }
+
+    public List<Product> getBasket() {
+        return basket;
+    }
 }

@@ -20,7 +20,7 @@ public class SwingView implements View {
     @Override
     public void startView(){
         frame = new JFrame("shop");
-        frame.setSize(400,400);
+        frame.setSize(600,600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         drawWelcomePage();
         frame.setVisible(true);
@@ -91,7 +91,33 @@ public class SwingView implements View {
     @Override
     public void drawUserPage(){
         userPanel = new JPanel();
+//        userPanel.setLayout(new BorderLayout());
+        JPanel firstPanel = new JPanel();
         frame.getContentPane().add(BorderLayout.CENTER,userPanel);
-        JList<String> abs;
+        JList<String> productList = new JList<>(controller.provideAvailableProducts());
+        productList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scroll = new JScrollPane(productList);
+        Box box1 = new Box(BoxLayout.Y_AXIS);
+        box1.add(new JLabel("Products"));
+        box1.add(scroll);
+        firstPanel.add(box1);
+        userPanel.add(firstPanel);
+        userPanel.setVisible(true);
+        JButton addButton = new JButton("Add        ");
+        JButton removeButton = new JButton("Remove");
+        Box box2 = new Box(BoxLayout.Y_AXIS);
+        JTextField amount = new JTextField("Amount");
+        box2.add(amount);
+        box2.add(addButton);
+        box2.add(removeButton);
+        firstPanel.add(box2);
+        Box box3 = new Box(BoxLayout.Y_AXIS);
+        JList<String> basket = new JList<>(controller.provideUserBasket());
+        JScrollPane scrollBasket = new JScrollPane(basket);
+        box3.add(new JLabel("Basket"));
+        box3.add(scrollBasket);
+        JButton buyButton = new JButton("Buy all");
+        box3.add(buyButton);
+        firstPanel.add(box3);
     }
 }
