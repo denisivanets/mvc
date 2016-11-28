@@ -1,16 +1,26 @@
 package business;
 
+import files.FileUtils;
 import inmemorydb.InMemoryDB;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Model {
     Client currentClient;
     List<Product> availableProducts;
 
+    public Model(){
+        availableProducts = FileUtils.readProductsFromFile();
+        InMemoryDB.setProductList(FileUtils.readProductsFromFile());
+        InMemoryDB.setClientsList(FileUtils.readClientsFromFile());
+        InMemoryDB.setTransactionsList(FileUtils.readTransactionsFromFile());
+    }
+
 
     public AccountType checkLogin(String login,char[] password){
-        Client client = FileUtils.findClientInFileByLogin(login);
+        Client client = findClientByLogin(login);
         if(client != null){
             if(parsePassword(password).equals(client.getPassword())){
                 currentClient = client;
@@ -54,8 +64,27 @@ public class Model {
         FileUtils.writeClientInFile(client);
     }
 
-    public List<Product> getProductList(){
-        return null;//TODO:???????????????
+    public List<String> getAvailableProducts(){
+        List<String> productsAsStringList = new ArrayList<>();
+        InMemoryDB.getProductList().forEach(
+                (product) -> productsAsStringList.add(product.toString())
+        );
+        return productsAsStringList;
+    }
+
+    private Client findClientByLogin(String login){
+        List<Client> allClients = InMemoryDB.getClientsList();
+        Client client = null;
+        boolean breakCondition = false;
+        int i = 0;
+        while(!breakCondition){
+            client = allClients.get(i);
+            if(login.equals(client.getLogin())){
+                breakCondition = true;
+            }
+            i++;
+        }//while
+        return client;
     }
 
 

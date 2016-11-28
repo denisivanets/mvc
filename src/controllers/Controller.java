@@ -44,8 +44,8 @@ public class Controller {
         view.drawUserPage();
     }
 
-    public List<Product> provideAvailableProducts(){
-        return null;//TODO:???????????????
+    public List<String> provideAvailableProducts(){
+       return model.getAvailableProducts();
     }
 
 }

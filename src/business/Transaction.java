@@ -6,13 +6,13 @@ public class Transaction {
     private String clientLogin;
     private String productName;
     private int amount;
-    private Date date;
+    private String date;
 
     public Transaction(String clientLogin,String productName,int amount){
         this.clientLogin = clientLogin;
         this.productName = productName;
         this.amount = amount;
-        date = new Date();
+        date = new Date().toString();
     }
 
     public String getClientLogin() {
@@ -39,11 +39,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }
