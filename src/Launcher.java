@@ -1,13 +1,11 @@
-import business.*;
+import model.*;
 import controllers.Controller;
 import views.SwingView;
 import views.View;
 
-import java.util.List;
-
 
 public class Launcher {
-    Model model;
+    Shop shop;
     View view;
     Controller controller;
 
@@ -16,8 +14,8 @@ public class Launcher {
         launcher.startApp();
     }
     private void startApp(){
-        model = new Model();
-        controller = new Controller(model);
+        shop = new Shop();
+        controller = new Controller(shop);
         view = new SwingView(controller);
         controller.setView(view);
         controller.runView();

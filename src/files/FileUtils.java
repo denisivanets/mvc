@@ -1,9 +1,9 @@
 package files;
 
-import business.AccountType;
-import business.Client;
-import business.Product;
-import business.Transaction;
+import model.AccountType;
+import model.Client;
+import model.Product;
+import model.Transaction;
 
 import java.io.*;
 import java.io.File;

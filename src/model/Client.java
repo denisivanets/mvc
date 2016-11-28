@@ -1,4 +1,4 @@
-package business;
+package model;
 
 
 import java.util.ArrayList;
@@ -71,8 +71,12 @@ public class Client {
         this.password = password;
     }
 
-    public void addProduct(Product product){
+    public void addProductToBasket(Product product){
         basket.add(product);
+    }
+
+    public void removeProduct(Product product){
+        basket.remove(product);
     }
 
     public List<Product> getBasket() {

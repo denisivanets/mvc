@@ -1,4 +1,4 @@
-package business;
+package model;
 
 public class Product {
     private String productName;
@@ -37,6 +37,6 @@ public class Product {
 
     @Override
     public String toString(){
-        return String.format("%s\t$%.2f",productName,cost);
+        return String.format("%s,$%.2f,available:%d",productName,cost,amount);
     }
 }

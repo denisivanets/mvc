@@ -1,20 +1,20 @@
 package controllers;
 
-import business.Model;
-import business.AccountType;
+import model.Shop;
+import model.AccountType;
 import views.View;
 import java.util.Vector;
 
 public class Controller {
-    Model model;
-    View view;
+    private Shop shop;
+    private View view;
 
     public void runView(){
         view.startView();
     }
 
-    public Controller(Model model){
-        this.model = model;
+    public Controller(Shop shop){
+        this.shop = shop;
     }
 
     public void setView(View view){
@@ -22,7 +22,7 @@ public class Controller {
     }
 
     public void loginAction(String login,char[] password){
-        AccountType type = model.checkLogin(login,password);
+        AccountType type = shop.checkLogin(login,password);
         switch(type){
             case ADMIN:
                 view.drawAdminPage();
@@ -39,16 +39,50 @@ public class Controller {
     }
 
     public void registerAction(String name, String surname, String phone, String login, char[] password){
-        model.createUser(name,surname,phone,login,password);
+        shop.createUser(name,surname,phone,login,password);
         view.drawUserPage();
     }
 
     public Vector<String> provideAvailableProducts(){
-       return model.getAvailableProductsToController();
+       return shop.getAvailableProductsToController();
     }
 
     public Vector<String> provideUserBasket(){
-        return model.getCurrentUserBasket();
+        return shop.getCurrentUserBasket();
+    }
+
+    public void setContentFromBasket(String content){
+        shop.addProductToCurrentUserBasket(content);
+    }
+
+    public Vector<String> getContentForBasket(){
+        Vector<String> result = new Vector<>();
+        shop.getCurrentUserBasket().forEach(
+                (element) -> {
+                    result.add(element.substring(0,element.lastIndexOf(",")));
+                }
+        );
+        return result;
+    }
+
+    public String getContentForTotalSum(){
+        return "Total : $" + Double.toString(shop.getTotalSum());
+    }
+
+    public void removeContentFromBasket(String content){
+        shop.removeProductFromBasket(content);
+    }
+
+    public String getContentForBalance(){
+        return "Balance : $" + Double.toString(shop.getBalance());
+    }
+
+    public void backAction(){
+        view.drawWelcomePage();
+    }
+
+    public void buyAction(){
+        shop.buyItemsFromCurrentUserBasket();
     }
 
 }

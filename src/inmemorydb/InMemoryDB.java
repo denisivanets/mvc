@@ -1,7 +1,7 @@
 package inmemorydb;
-import business.Client;
-import business.Product;
-import business.Transaction;
+import model.Client;
+import model.Product;
+import model.Transaction;
 
 import java.util.*;
 
