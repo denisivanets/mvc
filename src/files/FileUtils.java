@@ -41,7 +41,7 @@ public class FileUtils {
 
     public static void writeTransactionIfFile(Transaction transaction){
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(transactionsPath,true))){
-            bw.write(parseTransactionToString(transaction));
+            bw.write(parseTransactionToString(transaction) + "\n");
         } catch(IOException ex){
             ex.getMessage();
             ex.printStackTrace();
