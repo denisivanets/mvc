@@ -2,6 +2,7 @@ package controllers;
 
 import model.Shop;
 import model.AccountType;
+import model.Transaction;
 import views.View;
 import java.util.Vector;
 
@@ -83,6 +84,16 @@ public class Controller {
 
     public void buyAction(){
         shop.buyItemsFromCurrentUserBasket();
+    }
+
+    public Vector<String> getTransactionContent(){
+        Vector<String> transactionContent = new Vector<>();
+        shop.getTransactions().forEach(
+                (element) -> {
+                    transactionContent.add(element.toString());
+                }
+        );
+        return transactionContent;
     }
 
 }

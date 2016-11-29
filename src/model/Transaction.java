@@ -46,4 +46,9 @@ public class Transaction {
     public void setDate(String date) {
         this.date = date;
     }
+
+    @Override
+    public String toString(){
+        return String.format("login:%s, product:%s, amount:%d, date:%s",clientLogin,productName,amount,date);
+    }
 }

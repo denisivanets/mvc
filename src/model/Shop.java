@@ -231,4 +231,14 @@ public class Shop {
                 (element) -> FileUtils.writeTransactionIfFile(element)
         );
     }
+
+    public Vector<Transaction> getTransactions(){
+        Vector<Transaction> transactions = new Vector<>();
+        InMemoryDB.getTransactionsList().forEach(
+                (element) -> {
+                    transactions.add(element);
+                }
+        );
+        return transactions;
+    }
 }

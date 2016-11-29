@@ -3,6 +3,7 @@ package views;
 import controllers.Controller;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class SwingView implements View {
@@ -52,6 +53,8 @@ public class SwingView implements View {
     public void drawAdminPage(){
         frame.setSize(700,600);
         adminPanel = new JPanel();
+        adminPanel.setLayout(new BorderLayout());
+        Box adminPanelBox = new Box(BoxLayout.Y_AXIS);
         frame.getContentPane().add(BorderLayout.CENTER,adminPanel);
         JPanel firstPanel = new JPanel();
         JButton backButton = new JButton("Back");
@@ -69,7 +72,12 @@ public class SwingView implements View {
         JButton addNewProductButton = new JButton("Add new product");
         box2.add(addNewProductButton);
         firstPanel.add(box2);
-        adminPanel.add(firstPanel);
+        JList<String> transactions = new JList<>(controller.getTransactionContent());
+        JScrollPane scrollTrans = new JScrollPane(transactions);
+        adminPanelBox.add(firstPanel);
+        adminPanelBox.add(new JLabel("Transactions"));
+        adminPanelBox.add(scrollTrans);
+        adminPanel.add(adminPanelBox);
         adminPanel.setVisible(true);
     }
     @Override
