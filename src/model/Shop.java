@@ -84,17 +84,17 @@ public class Shop {
     }
 
     private Client findClientByLogin(String login){
-        List<Client> allClients = InMemoryDB.getClientsList();
         Client client = null;
-        boolean breakCondition = false;
-        int i = 0;
-        while(!breakCondition){
-            client = allClients.get(i);
-            if(login.equals(client.getLogin())){
-                breakCondition = true;
-            }
-            i++;
-        }//while
+        List<String> logins = new ArrayList<>();
+        InMemoryDB.getClientsList().forEach(
+                (element) -> {
+                    logins.add(element.getLogin());
+                }
+        );
+        int index = logins.indexOf(login);
+        if(index >= 0){
+            return InMemoryDB.getClientsList().get(index);
+        }
         return client;
     }
 
@@ -165,6 +165,7 @@ public class Shop {
                     FileUtils.writeProductInFile(product);
                 }
         );
+        updateClientInDBs();
     }
 
     private int getIndexByProductName(String productName, List<Product> list){
@@ -192,9 +193,42 @@ public class Shop {
                 if(storageItem.getAmount() > 0 && currentClient.getBalance() >= basketItem.getCost()){
                 currentClient.setBalance(currentClient.getBalance() - basketItem.getCost());
                 storageItem.setAmount(storageItem.getAmount() - 1);
+                createTransaction(currentClient.getLogin(),basketItem.getProductName(),1,new Date().toString());
                 iterator.remove();
                 }
             }
         }
+    }
+
+    private void updateClientInDBs(){
+        int index = getIndexByClientName(currentClient.getName());
+        InMemoryDB.getClientsList().remove(index);
+        InMemoryDB.getClientsList().add(index,currentClient);
+        FileUtils.clearFile(FileUtils.clientsPath);
+        InMemoryDB.getClientsList().forEach(
+                (element) -> {
+                    FileUtils.writeClientInFile(element);
+                }
+        );
+    }
+
+    private int getIndexByClientName(String name){
+        List<String> names = new ArrayList<>();
+        InMemoryDB.getClientsList().forEach(
+                (element) -> {
+                    names.add(element.getName());
+                }
+        );
+        return names.indexOf(name);
+    }
+
+    private void createTransaction(String login,String prodName, int amount, String date){
+        Transaction transaction = new Transaction(login,prodName,amount);
+        transaction.setDate(date);
+        InMemoryDB.addTransaction(transaction);
+        FileUtils.clearFile(FileUtils.transactionsPath);
+        InMemoryDB.getTransactionsList().forEach(
+                (element) -> FileUtils.writeTransactionIfFile(element)
+        );
     }
 }

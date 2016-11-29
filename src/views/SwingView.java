@@ -50,10 +50,26 @@ public class SwingView implements View {
     }
     @Override
     public void drawAdminPage(){
+        frame.setSize(700,600);
         adminPanel = new JPanel();
         frame.getContentPane().add(BorderLayout.CENTER,adminPanel);
-        JTextArea area = new JTextArea("ADMIN PAGE");
-        adminPanel.add(area);
+        JPanel firstPanel = new JPanel();
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(
+                (event) -> controller.backAction()
+        );
+        Box box1 = new Box(BoxLayout.Y_AXIS);
+        JLabel storageLabel = new JLabel("Storage");
+        JList<String> storage = new JList<>(controller.provideAvailableProducts());
+        JScrollPane scroll = new JScrollPane(storage);
+        box1.add(storageLabel);
+        box1.add(scroll);
+        firstPanel.add(box1);
+        Box box2 = new Box(BoxLayout.Y_AXIS);
+        JButton addNewProductButton = new JButton("Add new product");
+        box2.add(addNewProductButton);
+        firstPanel.add(box2);
+        adminPanel.add(firstPanel);
         adminPanel.setVisible(true);
     }
     @Override

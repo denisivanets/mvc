@@ -64,7 +64,6 @@ public class FileUtils {
     }
 
     public static void writeProductInFile(Product product){
-        //TODO:HERE is
         File file = new File(clientsPath);
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(productsPath,true))){
             bw.write(parseProductToString(product) + "\n");
