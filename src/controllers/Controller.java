@@ -40,8 +40,12 @@ public class Controller {
     }
 
     public void registerAction(String name, String surname, String phone, String login, char[] password){
-        shop.createUser(name,surname,phone,login,password);
-        view.drawUserPage();
+        if(shop.createUser(name,surname,phone,login,password)){
+            view.drawUserPage();
+        }
+        else{
+            view.drawRegisterPage();
+        }
     }
 
     public Vector<String> provideAvailableProducts(){
@@ -67,7 +71,8 @@ public class Controller {
     }
 
     public String getContentForTotalSum(){
-        return "Total : $" + Double.toString(shop.getTotalSum());
+        double sum = shop.getTotalSum();
+        return String.format("Total : $%.2f",sum);
     }
 
     public void removeContentFromBasket(String content){
@@ -75,7 +80,8 @@ public class Controller {
     }
 
     public String getContentForBalance(){
-        return "Balance : $" + Double.toString(shop.getBalance());
+        double balance = shop.getBalance();
+        return String.format("Balance : $%.2f",balance);
     }
 
     public void backAction(){
@@ -95,5 +101,13 @@ public class Controller {
         );
         return transactionContent;
     }
+    public void addNewItemAction(){
+        view.drawAddItemPage();
+    }
 
+    public void backFromAdd(){ view.drawAdminPage(); }
+
+    public boolean addNewItem(String name, String cost,String amount){
+        return shop.addNewItem(name,cost,amount);
+    }
 }

@@ -6,5 +6,5 @@ public interface View {
     void drawAdminPage();
     void drawRegisterPage();
     void drawUserPage();
-
+    void drawAddItemPage();
 }

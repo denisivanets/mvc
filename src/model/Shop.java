@@ -4,6 +4,8 @@ import files.FileUtils;
 import inmemorydb.InMemoryDB;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Shop {
     private Client currentClient;
@@ -49,16 +51,59 @@ public class Shop {
         }
     }
 
-    public void createUser(String name, String surname, String phone, String login, char[] password){
+    public boolean createUser(String name, String surname, String phone, String login, char[] password){
+        if(!checkValidationData(name,surname,phone,login,password)){
+            return false;
+        }
+        if(checkExistLogin(login)){
+            return false;
+        }
         Client client = createClient(name,surname,phone,login,password);
-        addClientToAllDBs(client);
         currentClient = client;
+        InMemoryDB.addClient(client);
+        FileUtils.writeClientInFile(client);
+        return true;
+    }
+
+    private boolean checkExistLogin(String login){
+        if(getIndexByClientLogin(login) >= 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkValidationData(String name, String surname, String phone, String login, char[] password){
+        Pattern loginPattern = Pattern.compile("[a-zA-z1-9]*");
+        Pattern pattern = Pattern.compile("[a-zA-z]*");
+        Pattern patternPhone = Pattern.compile("[0-9]*");
+        Matcher matcherName = pattern.matcher(name);
+        if(!matcherName.matches()){
+            return false;
+        }
+        Matcher matcherSurname = pattern.matcher(surname);
+        if(!matcherSurname.matches()){
+            return false;
+        }
+        Matcher matcherLogin = loginPattern.matcher(login);
+        if(!matcherLogin.matches()){
+            return false;
+        }
+        Matcher matcherPhone = patternPhone.matcher(phone);
+        if(!matcherPhone.matches()){
+            return false;
+        }
+        Matcher matcherPassword = loginPattern.matcher(parsePassword(password));
+        if(!matcherPassword.matches()){
+            return false;
+        }
+        return true;
     }
 
     private Client createClient(String name, String surname, String phone, String login, char[] password){
         Client client = new Client(AccountType.USER);
         client.setName(name);
-        client.setBalance(5700);
+        client.setBalance(100);
         client.setSurname(surname);
         client.setPhone(phone);
         client.setLogin(login);
@@ -169,18 +214,11 @@ public class Shop {
     }
 
     private int getIndexByProductName(String productName, List<Product> list){
-        boolean isMatch = false;
-        int index = -1;
-        int i = 0;
-        while (!isMatch) {
-            String name = list.get(i).getProductName();
-            if (productName.equals(name)) {
-                index = i;
-                isMatch = true;
-            }
-            i++;
-        }
-        return index;
+        List<String> namesList = new ArrayList<>();
+        list.forEach(
+                (element) -> namesList.add(element.getProductName())
+        );
+        return namesList.indexOf(productName);
     }
 
     private void buyAction(List<Product> basketList,List<Product> storageList){
@@ -201,7 +239,7 @@ public class Shop {
     }
 
     private void updateClientInDBs(){
-        int index = getIndexByClientName(currentClient.getName());
+        int index = getIndexByClientLogin(currentClient.getLogin());
         InMemoryDB.getClientsList().remove(index);
         InMemoryDB.getClientsList().add(index,currentClient);
         FileUtils.clearFile(FileUtils.clientsPath);
@@ -212,14 +250,14 @@ public class Shop {
         );
     }
 
-    private int getIndexByClientName(String name){
-        List<String> names = new ArrayList<>();
+    private int getIndexByClientLogin(String login){
+        List<String> logins = new ArrayList<>();
         InMemoryDB.getClientsList().forEach(
                 (element) -> {
-                    names.add(element.getName());
+                    logins.add(element.getLogin());
                 }
         );
-        return names.indexOf(name);
+        return logins.indexOf(login);
     }
 
     private void createTransaction(String login,String prodName, int amount, String date){
@@ -241,4 +279,31 @@ public class Shop {
         );
         return transactions;
     }
+
+    public boolean addNewItem(String name, String cost, String amount){
+        double prodCost = 0;
+        int prodAmount = 0;
+        try {
+            prodCost = Double.parseDouble(cost);
+            prodAmount = Integer.parseInt(amount);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        List<Product> storage = InMemoryDB.getProductList();
+        int index = getIndexByProductName(name,storage);
+        if(index >= 0){
+            int newAmount = storage.get(index).getAmount() + prodAmount;
+            storage.get(index).setAmount(newAmount);
+            FileUtils.clearFile(FileUtils.productsPath);
+            storage.forEach(
+                    (element) -> FileUtils.writeProductInFile(element)
+            );
+        }
+        else{
+            InMemoryDB.getProductList().add(new Product(name,prodAmount,prodCost));
+            FileUtils.writeProductInFile(new Product(name,prodAmount,prodCost));
+        }
+        return true;
+    }
+
 }

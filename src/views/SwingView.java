@@ -3,16 +3,11 @@ package views;
 import controllers.Controller;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class SwingView implements View {
     private JFrame frame;
     private Controller controller;
-    private JPanel welcomePanel;
-    private JPanel adminPanel;
-    private JPanel registerPanel;
-    private JPanel userPanel;
 
     public SwingView(Controller controller){
         this.controller = controller;
@@ -28,7 +23,7 @@ public class SwingView implements View {
     }
     @Override
     public void drawWelcomePage(){
-        welcomePanel = new JPanel();
+        JPanel welcomePanel = new JPanel();
         frame.getContentPane().add(BorderLayout.CENTER,welcomePanel);
         JTextField login = new JTextField("Login",10);
         JPasswordField password = new JPasswordField(10);
@@ -48,18 +43,22 @@ public class SwingView implements View {
         } );
         box.add(registerButton);
         welcomePanel.add(box);
+        welcomePanel.setVisible(true);
     }
     @Override
     public void drawAdminPage(){
+        JPanel adminPanel = new JPanel();
         frame.setSize(700,600);
-        adminPanel = new JPanel();
         adminPanel.setLayout(new BorderLayout());
         Box adminPanelBox = new Box(BoxLayout.Y_AXIS);
         frame.getContentPane().add(BorderLayout.CENTER,adminPanel);
         JPanel firstPanel = new JPanel();
         JButton backButton = new JButton("Back");
         backButton.addActionListener(
-                (event) -> controller.backAction()
+                (event) -> {
+                    controller.backAction();
+                    adminPanel.setVisible(false);
+                }
         );
         Box box1 = new Box(BoxLayout.Y_AXIS);
         JLabel storageLabel = new JLabel("Storage");
@@ -78,11 +77,18 @@ public class SwingView implements View {
         adminPanelBox.add(new JLabel("Transactions"));
         adminPanelBox.add(scrollTrans);
         adminPanel.add(adminPanelBox);
+        adminPanel.add(BorderLayout.SOUTH,backButton);
+        addNewProductButton.addActionListener(
+                (event) -> {
+                    adminPanel.setVisible(false);
+                    controller.addNewItemAction();
+                }
+        );
         adminPanel.setVisible(true);
     }
     @Override
     public void drawRegisterPage(){
-        registerPanel = new JPanel();
+        JPanel registerPanel = new JPanel();
         frame.getContentPane().add(registerPanel);
         Box box = new Box(BoxLayout.Y_AXIS);
         registerPanel.add(BorderLayout.CENTER,box);
@@ -114,7 +120,7 @@ public class SwingView implements View {
     }
     @Override
     public void drawUserPage(){
-        userPanel = new JPanel();
+        JPanel userPanel = new JPanel();
         userPanel.setLayout(new BorderLayout());
         JPanel firstPanel = new JPanel();
         frame.getContentPane().add(BorderLayout.CENTER,userPanel);
@@ -176,6 +182,40 @@ public class SwingView implements View {
                     productList.setListData(controller.provideAvailableProducts());
                     balance.setText(controller.getContentForBalance());
                     totalSum.setText(controller.getContentForTotalSum());
+                }
+        );
+    }
+    @Override
+    public void drawAddItemPage(){
+        JPanel addItemPanel = new JPanel();
+        frame.getContentPane().add(addItemPanel);
+        JTextField prodName = new JTextField("Product name");
+        JTextField prodCost = new JTextField("Cost");
+        JTextField prodAmount = new JTextField("Amount");
+        Box box = new Box(BoxLayout.Y_AXIS);
+        box.add(prodName);
+        box.add(prodCost);
+        box.add(prodAmount);
+        JButton addButton = new JButton("Add  ");
+        JButton backButton = new JButton("Back");
+        box.add(addButton);
+        box.add(backButton);
+        addItemPanel.add(box);
+        backButton.addActionListener(
+                (event) -> {
+                    addItemPanel.setVisible(false);
+                    controller.backFromAdd();
+                }
+        );
+        addButton.addActionListener(
+                (event) -> {
+                    String name = prodName.getText();
+                    String cost = prodCost.getText();
+                    String amount = prodAmount.getText();
+                    if (controller.addNewItem(name,cost,amount)) {
+                        addItemPanel.setVisible(false);
+                        controller.backFromAdd();
+                    }
                 }
         );
     }
