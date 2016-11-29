@@ -159,6 +159,12 @@ public class Shop {
         List<Product> basket = currentClient.getBasket();
         List<Product> storage = InMemoryDB.getProductList();
         buyAction(basket,storage);
+        FileUtils.clearFile(FileUtils.productsPath);
+        InMemoryDB.getProductList().forEach(
+                (product) -> {
+                    FileUtils.writeProductInFile(product);
+                }
+        );
     }
 
     private int getIndexByProductName(String productName, List<Product> list){

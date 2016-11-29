@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtils {
-    private static String clientsPath = "src\\files\\clients.dat";
-    private static String transactionsPath = "src\\files\\transactions.dat";
-    private static String productsPath = "src\\files\\products.dat";
+    public static final String clientsPath = "src\\files\\clients.dat";
+    public static final String transactionsPath = "src\\files\\transactions.dat";
+    public static final String productsPath = "src\\files\\products.dat";
 
     public static void writeClientInFile(Client client){
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(clientsPath,true))){
@@ -64,6 +64,8 @@ public class FileUtils {
     }
 
     public static void writeProductInFile(Product product){
+        //TODO:HERE is
+        File file = new File(clientsPath);
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(productsPath,true))){
             bw.write(parseProductToString(product) + "\n");
         } catch(IOException ex){
@@ -171,5 +173,15 @@ public class FileUtils {
         return str.substring(str.indexOf(":") + 1);
     }
 
+    public static void clearFile(String path){
+        File file = new File(path);
+        try {
+            PrintWriter writer = new PrintWriter(file);
+            writer.print("");
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

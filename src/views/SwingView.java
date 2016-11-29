@@ -151,6 +151,7 @@ public class SwingView implements View {
                     basket.setListData(controller.getContentForBasket());
                     productList.setListData(controller.provideAvailableProducts());
                     balance.setText(controller.getContentForBalance());
+                    totalSum.setText(controller.getContentForTotalSum());
                 }
         );
     }
